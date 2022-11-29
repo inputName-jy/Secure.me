@@ -10,61 +10,50 @@ var specChar = ("~,!,@,#,$,%,^,&,*,(,),-,_,=,+,/,?,;,:").split(',');
 // Fail-safe to ensure that input for character length is a number/converted to a number
 // Fail-safe to ensure that atleast one type of character is selected
 
-function passCriteria() {
-  var passLength = parseInt(prompt("How long in characters would you like your password to be?"));
-  
-  if (Number.isNaN(passLength)) {
-    alert("Please enter a number to indicate how long the password should be");
-    passCriteria();
-  } else if (passLength < 8) {
-    alert("Password must be atleast 8 characters in length.");
-    passCriteria();
-  } else if (passLength > 128) {
-    alert("Password cannot be more than 128 characters in length");
-    passCriteria();
-  };
-  
-  // do {
-  //   passLength = parseInt(prompt("How long in characters would you like your password to be?"));
-  //   if (Number.isNaN(passLength)) {
-  //     alert("Please enter a number to indicate how long the password should be");
-  //   };
-  //   if (passLength < 8) {
-  //     alert("Password must be atleast 8 characters in length.");
-  //     // passCriteria();
-  //   };
-  //   if (passLength > 128) {
-  //     alert("Password cannot be more than 128 characters in length");
-  //     // passCriteria();
-  //   };
-  // } while (!(Number.isNaN(passLength) && passLength < 8 && passLength > 128))
+function generatePassword() {
+  var passLength = 0;
 
-  // if (passLength < 8) {
-  //   alert("Password must be atleast 8 characters in length.");
-  //   // passCriteria();
-  // };
+  do {
+    passLength = parseInt(prompt("How long in characters would you like your password to be?"));
+    if (Number.isNaN(passLength)) {
+      alert("Please enter a number to indicate how long the password should be");
+    };
+    if (passLength < 8) {
+      alert("Password must be atleast 8 characters in length.");
 
-  // if (passLength > 128) {
-  //   alert("Password cannot be more than 128 characters in length");
-  //   // passCriteria();
-  // };
+    };
+    if (passLength > 128) {
+      alert("Password cannot be more than 128 characters in length");
 
-  var lowCaseOption = confirm("Would you like your password to contain lower case letters?");
-  var uppCaseOption = confirm("Would you like your password to contain upper case letters?");
-  var numberOption = confirm("Would you like your passowrd to contain numbers?");
-  var specCharOption = confirm("Would you like your password to contain special characters?");
+    };
+  } while (Number.isNaN(passLength) || passLength < 8 || passLength > 128)
+
+
+  var lowCaseOption = false;
+  var uppCaseOption = false;
+  var numberOption = false;
+  var specCharOption = false;
   var randLowCaseChar = []
   var randUppCaseChar = []
   var randNumberChar = []
   var randSpecCaseChar = []
 
-  if (
-  lowCaseOption === false && 
-  uppCaseOption === false && 
-  numberOption === false && 
-  specCharOption === false ) {
-  alert("Password must contain atleast one type of character!");
-  };
+  do {
+    lowCaseOption = confirm("Would you like your password to contain lower case letters?");
+    uppCaseOption = confirm("Would you like your password to contain upper case letters?");
+    numberOption = confirm("Would you like your password to contain numbers?");
+    specCharOption = confirm("Would you like your password to contain special characters?");
+    if (
+      lowCaseOption === false &&
+      uppCaseOption === false &&
+      numberOption === false &&
+      specCharOption === false) {
+      alert("Password must contain atleast one type of character!");
+    };
+  } while (lowCaseOption === false &&
+  uppCaseOption === false &&
+  numberOption === false &&
+    specCharOption === false);
 
 
   var passDetails = {
@@ -76,10 +65,9 @@ function passCriteria() {
   };
 
 
-
   function shufflearray(arraytoshuffle) {
-    for (i = arraytoshuffle.length-1; i >= 0; i--) {
-      var randPos = Math.floor(Math.random() * (i+1));
+    for (i = arraytoshuffle.length - 1; i >= 0; i--) {
+      var randPos = Math.floor(Math.random() * (i + 1));
       var temp = arraytoshuffle[i];
 
       arraytoshuffle[i] = arraytoshuffle[randPos];
@@ -90,74 +78,47 @@ function passCriteria() {
 
   if (passDetails.lowCaseOption) {
     randLowCaseChar = shufflearray(lowCaseChar);
-    
+
   };
-  
+
   if (passDetails.uppCaseOption) {
     randUppCaseChar = shufflearray(uppCaseChar);
-   
+
   };
 
   if (passDetails.numberOption) {
     randNumberChar = shufflearray(numberChar);
-    
+
   };
 
   if (passDetails.specCharOption) {
     randSpecCaseChar = shufflearray(specChar);
-   
+
   };
 
   var randSelectedChar = randLowCaseChar.concat(randUppCaseChar).concat(randNumberChar).concat(randSpecCaseChar);
   var possibleChar = shufflearray(randSelectedChar);
-  
-  var password = ""
-  for (var i = 0; i < passLength; i++ ) {
-    password += possibleChar[Math.floor(Math.random() * possibleChar.length)]
-  }
 
+  var passwordTemp = [randLowCaseChar[Math.floor(Math.random() * randLowCaseChar.length)], (randUppCaseChar[Math.floor(Math.random() * randUppCaseChar.length)]), (randNumberChar[Math.floor(Math.random() * randNumberChar.length)]), (randSpecCaseChar[Math.floor(Math.random() * randSpecCaseChar.length)])];
+
+  passwordTemp = passwordTemp.join();
+  for (var i = 0; i < passLength - 4; i++) {
+    passwordTemp += ',' + possibleChar[Math.floor(Math.random() * possibleChar.length)]
+  }
+  var password = passwordTemp.split(',')
+  
+  password = shufflearray(password);
+  
+  password = password.join('');
+  
+  console.log(password);
   document.getElementById("password").value = password;
+
 }
 
 
-// var randSelectedChar = randLowCaseChar.concat(randUppCaseChar).concat(randNumberChar).concat(randSpecCaseChar);
-  // console.log(randSelectedChar);
-
 var generateBtn = document.querySelector("#generate");
-generateBtn.addEventListener("click", passCriteria);
+generateBtn.addEventListener("click", generatePassword);
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// // Assignment Code
-// var generateBtn = document.querySelector("#generate");
-
-// // Write password to the #password input
-// function writePassword() {
-//   var password = generatePassword();
-//   var passwordText = document.querySelector("#password");
-
-//   passwordText.value = password;
-
-// }
-
-// // Add event listener to generate button
-// generateBtn.addEventListener("click", writePassword);
