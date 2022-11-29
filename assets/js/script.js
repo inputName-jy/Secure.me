@@ -15,20 +15,48 @@ function passCriteria() {
   
   if (Number.isNaN(passLength)) {
     alert("Please enter a number to indicate how long the password should be");
-  };
-
-  if (passLength < 8) {
+    passCriteria();
+  } else if (passLength < 8) {
     alert("Password must be atleast 8 characters in length.");
-  };
-
-  if (passLength > 128) {
+    passCriteria();
+  } else if (passLength > 128) {
     alert("Password cannot be more than 128 characters in length");
+    passCriteria();
   };
+  
+  // do {
+  //   passLength = parseInt(prompt("How long in characters would you like your password to be?"));
+  //   if (Number.isNaN(passLength)) {
+  //     alert("Please enter a number to indicate how long the password should be");
+  //   };
+  //   if (passLength < 8) {
+  //     alert("Password must be atleast 8 characters in length.");
+  //     // passCriteria();
+  //   };
+  //   if (passLength > 128) {
+  //     alert("Password cannot be more than 128 characters in length");
+  //     // passCriteria();
+  //   };
+  // } while (!(Number.isNaN(passLength) && passLength < 8 && passLength > 128))
+
+  // if (passLength < 8) {
+  //   alert("Password must be atleast 8 characters in length.");
+  //   // passCriteria();
+  // };
+
+  // if (passLength > 128) {
+  //   alert("Password cannot be more than 128 characters in length");
+  //   // passCriteria();
+  // };
 
   var lowCaseOption = confirm("Would you like your password to contain lower case letters?");
   var uppCaseOption = confirm("Would you like your password to contain upper case letters?");
   var numberOption = confirm("Would you like your passowrd to contain numbers?");
   var specCharOption = confirm("Would you like your password to contain special characters?");
+  var randLowCaseChar = []
+  var randUppCaseChar = []
+  var randNumberChar = []
+  var randSpecCaseChar = []
 
   if (
   lowCaseOption === false && 
@@ -50,7 +78,7 @@ function passCriteria() {
 
 
   function shufflearray(arraytoshuffle) {
-    for (i = arraytoshuffle.length-1; i>0; i--) {
+    for (i = arraytoshuffle.length-1; i >= 0; i--) {
       var randPos = Math.floor(Math.random() * (i+1));
       var temp = arraytoshuffle[i];
 
@@ -61,27 +89,39 @@ function passCriteria() {
   }
 
   if (passDetails.lowCaseOption) {
-    var randLowCaseChar = shufflearray(lowCaseChar);
-    console.log(randLowCaseChar);
+    randLowCaseChar = shufflearray(lowCaseChar);
+    
   };
   
   if (passDetails.uppCaseOption) {
-    var randUppCaseChar = shufflearray(uppCaseChar);
-    console.log(randUppCaseChar);
+    randUppCaseChar = shufflearray(uppCaseChar);
+   
   };
 
   if (passDetails.numberOption) {
-    var randNumberChar = shufflearray(numberChar);
-    console.log(randNumberChar);
+    randNumberChar = shufflearray(numberChar);
+    
   };
 
   if (passDetails.specCharOption) {
-    var randSpecCaseChar = shufflearray(specChar);
-    console.log(randSpecCaseChar);
+    randSpecCaseChar = shufflearray(specChar);
+   
   };
 
+  var randSelectedChar = randLowCaseChar.concat(randUppCaseChar).concat(randNumberChar).concat(randSpecCaseChar);
+  var possibleChar = shufflearray(randSelectedChar);
   
+  var password = ""
+  for (var i = 0; i < passLength; i++ ) {
+    password += possibleChar[Math.floor(Math.random() * possibleChar.length)]
+  }
+
+  document.getElementById("password").value = password;
 }
+
+
+// var randSelectedChar = randLowCaseChar.concat(randUppCaseChar).concat(randNumberChar).concat(randSpecCaseChar);
+  // console.log(randSelectedChar);
 
 var generateBtn = document.querySelector("#generate");
 generateBtn.addEventListener("click", passCriteria);
